@@ -1,22 +1,10 @@
-// Навігація між модулями
-document.addEventListener('DOMContentLoaded', () => {
-  const navBtns = document.querySelectorAll('.nav-btn');
-  const modules = document.querySelectorAll('.module');
-
-  navBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      navBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      modules.forEach(m => m.classList.remove('active'));
-      const target = document.getElementById(btn.dataset.module);
-      if (target) target.classList.add('active');
+// Реєстрація Service Worker для підтримки PWA.
+// Цей файл замінює базову реалізацію, щоб він спрацьовував для каталогу "police-improved".
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    // Файл service-worker.js знаходиться в корені каталогу police‑improved
+    navigator.serviceWorker.register('service-worker.js').catch(() => {
+      // Помилка реєстрації не є критичною, тому нічого не робимо
     });
   });
-
-  // Перемикач теми
-  const themeToggle = document.getElementById('themeToggle');
-  themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    themeToggle.textContent = document.body.classList.contains('light') ? '🌙 Темна тема' : '☀️ Світла тема';
-  });
-});
+}
