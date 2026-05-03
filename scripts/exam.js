@@ -1,3 +1,6 @@
+// scripts/exam.js
+// Модуль екзамену з універсальним звітом у GAS → Telegram-канал.
+
 document.addEventListener('DOMContentLoaded', () => {
   // =====================================================
   // КОНФІГУРАЦІЯ ПРОЄКТУ
@@ -140,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const analyticsPanel = document.getElementById('analyticsPanel');
   const reportStatus = document.getElementById('reportStatus');
 
-  // Якщо HTML не відповідає цьому JS, не ламаємо весь сайт.
   if (!studentLastNameInput || !studentFirstNameInput || !studentClassInput || !startTestBtn || !testArea || !finalScreen) {
     console.error('Модуль екзамену не ініціалізовано: перевірте index.html та id елементів.');
     return;
@@ -372,6 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const uniqueTags = [...new Set(wrongTags)];
     const wrongTagNames = uniqueTags.map(tag => tagNames[tag] || tag);
     const student = buildStudentData();
+    const date = new Date().toLocaleString();
 
     const result = {
       studentKey: student.studentKey,
@@ -381,7 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
       studentClass: student.className,
       score,
       total: shuffledQuestions.length,
-      date: new Date().toLocaleString()
+      date
     };
 
     const saved = JSON.parse(localStorage.getItem('policeExamResults') || '[]');
@@ -398,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
       : `⚠️ <strong>Рекомендація:</strong> повторіть теми: ${wrongTagNames.join(', ')}.`;
 
     sendUniversalReport({
-      date: result.date,
+      date,
       student: {
         lastName: student.lastName,
         firstName: student.firstName,
@@ -435,7 +438,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Коли учень повертається на вкладку екзамену після перезавантаження модулів.
   const testNavBtn = document.querySelector('[data-module="test"]');
 
   if (testNavBtn) {
