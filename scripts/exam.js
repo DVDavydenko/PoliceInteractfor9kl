@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // SECRET має збігатися із SECRET у Script Properties універсального GAS.
   const PROJECT_CONFIG = {
     gasUrl: 'https://script.google.com/macros/s/AKfycbwRbbNLhmzBU2ibivB_gt35glvZCHOvGOYFHim54qp_uqCK-JPFCIbjznwCb95dcml9/exec',
-    secret: 'school_reports_2026_secret',
+    secret: 'VuRjvnEHYkpA47Z',
     projectId: 'police-9kl',
     subject: 'Основи правознавства',
     topic: 'Нова українська поліція',
