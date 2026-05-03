@@ -10,73 +10,116 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.json">
 </head>
+
 <body class="light">
 <div class="app">
 
   <!-- Header -->
-  <div class="header-row">
+  <header class="header-row">
     <div style="display: flex; align-items: center; gap: 10px;">
-      <span class="badge">🛡️</span>
-      <h1>Нова українська поліція</h1>
+      <span class="badge" aria-hidden="true">🛡️</span>
+      <div>
+        <h1>Нова українська поліція</h1>
+        <p style="opacity:0.8;">§24. Основи правознавства. 9 клас</p>
+      </div>
     </div>
-    <button class="theme-toggle" id="themeToggle">🌙 Темна тема</button>
-  </div>
-  <p style="opacity:0.8;">§24. Основи правознавства. 9 клас</p>
+    <button class="theme-toggle" id="themeToggle" type="button">🌙 Темна тема</button>
+  </header>
 
   <!-- Навігація -->
-  <nav id="mainNav">
-    <button class="nav-btn active" data-module="theory">📖 Теорія</button>
-    <button class="nav-btn" data-module="simulator">🎮 Симулятор</button>
-    <button class="nav-btn" data-module="test">📝 Екзамен</button>
-    <button class="nav-btn" data-module="homework">✍️ Домашнє</button>
-    <button class="nav-btn" data-module="resources">🌐 Ресурси</button>
+  <nav id="mainNav" aria-label="Навігація модулями">
+    <button class="nav-btn active" type="button" data-module="theory">📖 Теорія</button>
+    <button class="nav-btn" type="button" data-module="simulator">🎮 Симулятор</button>
+    <button class="nav-btn" type="button" data-module="test">📝 Екзамен</button>
+    <button class="nav-btn" type="button" data-module="homework">✍️ Домашнє</button>
+    <button class="nav-btn" type="button" data-module="resources">🌐 Ресурси</button>
   </nav>
 
-  <!-- Модуль Теорія (слайди вставляються з theory.js) -->
-  <div id="theory" class="module active"></div>
+  <!-- Модуль Теорія: контент вставляється з scripts/theory.js -->
+  <section id="theory" class="module active" aria-label="Теорія"></section>
 
   <!-- Модуль Симулятор -->
-  <div id="simulator" class="module">
+  <section id="simulator" class="module" aria-labelledby="simulatorTitle">
+    <h2 id="simulatorTitle">🎮 Симулятор правових ситуацій</h2>
+
     <div class="card" id="scenarioSelector"></div>
     <div class="card" id="simScenario"></div>
     <div id="simOptions" style="display: flex; flex-direction: column; gap: 8px;"></div>
     <div id="simResult" class="card" style="margin-top: 1rem; display: none;"></div>
-    <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
-      <button class="btn" id="simBackBtn" disabled>↩️ Назад</button>
-      <button class="btn" id="simRestartBtn">🔄 Спочатку</button>
+
+    <div style="display: flex; justify-content: space-between; margin-top: 1rem; gap: 0.75rem; flex-wrap: wrap;">
+      <button class="btn" id="simBackBtn" type="button" disabled>↩️ Назад</button>
+      <button class="btn" id="simRestartBtn" type="button">🔄 Спочатку</button>
     </div>
-  </div>
+  </section>
 
   <!-- Модуль Екзамен -->
-  <div id="test" class="module">
-    <h2>📝 Екзамен з теми</h2>
+  <section id="test" class="module" aria-labelledby="testTitle">
+    <h2 id="testTitle">📝 Екзамен з теми</h2>
 
-    <div class="student-input">
-      <p style="opacity:0.85; margin-bottom:0.8rem;">
+    <div class="student-input card" id="studentStartPanel">
+      <p style="opacity:0.85; margin-bottom:0.9rem;">
         Перед початком роботи вкажіть свої дані. Вони потрібні для автоматичного звіту вчителю.
       </p>
 
-      <input type="text" id="studentLastName" placeholder="Прізвище" autocomplete="family-name">
-      <input type="text" id="studentFirstName" placeholder="Ім'я" autocomplete="given-name">
-      <input type="text" id="studentClass" placeholder="Клас, наприклад: 9-А">
+      <label for="studentLastName" style="font-weight:600;">Прізвище</label>
+      <input
+        type="text"
+        id="studentLastName"
+        name="studentLastName"
+        autocomplete="family-name"
+        placeholder="Наприклад: Петренко"
+        required
+      >
 
-      <button class="btn" id="startTestBtn">Почати екзамен</button>
-      <div id="nameError" style="color: #ff8888; margin-top: 0.5rem; display: none;"></div>
+      <label for="studentFirstName" style="font-weight:600;">Ім’я</label>
+      <input
+        type="text"
+        id="studentFirstName"
+        name="studentFirstName"
+        autocomplete="given-name"
+        placeholder="Наприклад: Іван"
+        required
+      >
+
+      <label for="studentClass" style="font-weight:600;">Клас</label>
+      <input
+        type="text"
+        id="studentClass"
+        name="studentClass"
+        placeholder="Наприклад: 9-А"
+        required
+      >
+
+      <button class="btn" id="startTestBtn" type="button" style="margin-top:0.75rem;">
+        Почати екзамен
+      </button>
+
+      <div
+        id="nameError"
+        role="alert"
+        style="color:#ff8888; margin-top:0.75rem; display:none;"
+      ></div>
     </div>
 
     <div id="testArea" class="hidden">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <span>Питання <span id="currentQSpan">1</span>/12</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 0.75rem; flex-wrap: wrap;">
+        <span>Питання <span id="currentQSpan">1</span>/<span id="totalQSpan">12</span></span>
         <span class="timer" id="timerDisplay">20:00</span>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+      <div class="progress-bar" aria-label="Прогрес виконання">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
       <div class="card">
-        <p id="questionText"></p>
+        <p id="questionText" style="font-weight:600; margin-bottom:1rem;"></p>
         <div id="optionsContainer"></div>
         <div id="testExplanation" style="margin-top:1rem; font-style:italic; color:#cdd9f0;"></div>
       </div>
+
       <div style="display:flex; justify-content:flex-end; align-items:center;">
-        <button class="btn" id="nextTestBtn" disabled>Далі →</button>
+        <button class="btn" id="nextTestBtn" type="button" disabled>Далі →</button>
       </div>
     </div>
 
@@ -86,47 +129,67 @@
       <div id="analyticsPanel" class="analytics"></div>
       <p style="margin-top: 1rem; font-size: 0.9rem;" id="reportStatus"></p>
     </div>
-  </div>
+  </section>
 
   <!-- Модуль Домашнє завдання -->
-  <div id="homework" class="module">
-    <h2>✍️ Домашнє завдання</h2>
+  <section id="homework" class="module" aria-labelledby="homeworkTitle">
+    <h2 id="homeworkTitle">✍️ Домашнє завдання</h2>
+
     <div class="card">
       <p><strong>Оберіть один варіант:</strong></p>
       <ol>
-        <li><strong>Мотиваційний лист</strong>: напишіть, чому ви хочете стати поліцейським (до 1 сторінки).</li>
+        <li><strong>Мотиваційний лист</strong>: напишіть, чому ви хочете стати поліцейським або поліцейською.</li>
         <li><strong>Інтерв'ю</strong>: опитайте дорослих про зміни в поліції за останні роки.</li>
         <li><strong>Комікс/постер</strong>: створіть історію одного дня патрульного.</li>
       </ol>
-      <textarea id="homeworkText" rows="8" placeholder="Введіть ваше есе або опис роботи..."></textarea>
-      <button class="btn" id="submitHomework">💾 Зберегти роботу</button>
-      <div id="homeworkSavedMsg" style="margin-top:1rem; color:#93e9a6; display:none;">✅ Роботу збережено! Вчитель зможе її переглянути.</div>
-    </div>
-  </div>
 
-  <!-- Модуль Ресурси -->
-  <div id="resources" class="module">
-    <h2>🌐 Корисні ресурси</h2>
-    <div class="card">
-      <ul>
-        <li><a href="https://www.npu.gov.ua/" target="_blank" rel="noopener">Офіційний сайт Національної поліції України</a></li>
-        <li><a href="https://zakon.rada.gov.ua/laws/show/580-19" target="_blank" rel="noopener">Закон України «Про Національну поліцію»</a></li>
-        <li><a href="https://www.youtube.com/@NationalPoliceUkraine" target="_blank" rel="noopener">YouTube-канал Національної поліції</a></li>
-      </ul>
-      <div style="margin-top:1rem;">
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Відео про поліцію" frameborder="0" allowfullscreen></iframe>
+      <textarea id="homeworkText" rows="8" placeholder="Введіть ваше есе або опис роботи..."></textarea>
+      <button class="btn" id="submitHomework" type="button">💾 Зберегти роботу</button>
+
+      <div id="homeworkSavedMsg" style="margin-top:1rem; color:#93e9a6; display:none;">
+        ✅ Роботу збережено на цьому пристрої.
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Модуль Ресурси -->
+  <section id="resources" class="module" aria-labelledby="resourcesTitle">
+    <h2 id="resourcesTitle">🌐 Корисні ресурси</h2>
+
+    <div class="card">
+      <ul>
+        <li>
+          <a href="https://www.npu.gov.ua/" target="_blank" rel="noopener">
+            Офіційний сайт Національної поліції України
+          </a>
+        </li>
+        <li>
+          <a href="https://zakon.rada.gov.ua/laws/show/580-19" target="_blank" rel="noopener">
+            Закон України «Про Національну поліцію»
+          </a>
+        </li>
+        <li>
+          <a href="https://cyberpolice.gov.ua/" target="_blank" rel="noopener">
+            Кіберполіція України
+          </a>
+        </li>
+        <li>
+          <a href="https://www.youtube.com/@NationalPoliceUkraine" target="_blank" rel="noopener">
+            YouTube-канал Національної поліції
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
 
 </div>
 
 <!-- Попап термінів -->
-<div id="termPopup" class="popup hidden">
+<div id="termPopup" class="popup hidden" role="dialog" aria-modal="true" aria-labelledby="termTitle">
   <div class="popup-content">
     <h3 id="termTitle"></h3>
     <p id="termDesc"></p>
-    <button class="btn" onclick="window.closeTerm()">Закрити</button>
+    <button class="btn" type="button" onclick="window.closeTerm()">Закрити</button>
   </div>
 </div>
 
